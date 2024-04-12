@@ -43,6 +43,18 @@ const Flow = () => {
   const [nodes, setNodes] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+  const updateNodeData = (nodeId, newData) =>{
+    setNodes((prevNodes) => {
+      const updatedNodes = prevNodes.map((node) => {
+        if (node.id === nodeId){
+          return {...node, data: newData};
+        }
+        return node;
+      });
+      return updatedNodes;
+    })
+  }
+
 
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const onDragOver = useCallback((event) => {
@@ -53,6 +65,7 @@ const Flow = () => {
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
+      const chainname = '';
 
       const type = "turbo";
 
@@ -72,7 +85,7 @@ const Flow = () => {
         id: getId(),
         type,
         position,
-        data: { title: `Node ${id}`, icon: <GiBreakingChain /> },
+        data: { title: `Node ${id}`, icon: <GiBreakingChain /> , chainname},
       };
 
       setNodes((nds) => nds.concat(newNode));
