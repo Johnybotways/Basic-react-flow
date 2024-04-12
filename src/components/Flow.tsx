@@ -1,29 +1,31 @@
 import ReactFlow, { Controls, addEdge, useEdgesState, applyNodeChanges, ReactFlowProvider, Node, Edge} from 'reactflow';
 import 'reactflow/dist/style.css';
-
+import CustomEdge from './CustomEdge';
 import TurboNode,{TurboNodeData} from './TurboNode';
 import Icon from './FunctionIcon';
 import { useCallback , useState} from 'react';
 import Sidebar from './Sidebar';
-import 
+ 
 
 
 const initialEdges : Edge[] = [ 
-
+  
 ];
 
 const edgeTypes = {
   turbo: CustomEdge,
 };
 // const edgeTypes = {
-//   'custom-edge': CustomEdge,
+//   turbo: CustomEdge,
 // };
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const Flow = () => {
 
-  const initialNodes : Node<TurboNodeData>[]=[];
+  const initialNodes : Node<TurboNodeData>[]=[
+    
+  ];
 
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -80,14 +82,14 @@ const Flow = () => {
 
 
     
-  //   const onConnect = useCallback(
-  //   (connection) => {
-  //     const edge = { ...connection, type: 'custom-edge' };
-  //     setEdges((eds) => addEdge(edge, eds));
-  //   },
-  //   [setEdges],
-  // );
-  const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), []);
+    const onConnect = useCallback(
+    (connection) => {
+      const edge = { ...connection, type: 'turbo' };
+      setEdges((eds) => addEdge(edge, eds));
+    },
+    [setEdges],
+  );
+  // const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), []);
 
   const nodeTypes = {
     turbo: TurboNode,

@@ -10,15 +10,15 @@ const Sidebar = ({onAddNode}) => {
 
         <>
         <div className="sidebar">
-            <div className="button p-2 font-mono font-semibold text-gray-900 shadow-2xl mr-5" onClick={onAddNode}>Add Node</div>
+            {/* <div className="button p-2 font-mono font-semibold text-gray-900 shadow-2xl mr-5" onClick={onAddNode}>Add Node</div> */}
             <div className="button p-2 font-mono font-semibold text-gray-900 shadow-2xl mr-5" onDragStart={(event) => onDragStart(event, 'input')} draggable>
-        Input Node
+        Chain Block
       </div>
       <div className="button p-2 font-mono font-semibold text-gray-900 shadow-2xl mr-5" onDragStart={(event) => onDragStart(event, 'default')} draggable>
-        Default Node
+        Condition Block
       </div>
       <div className="button p-2 font-mono font-semibold text-gray-900 shadow-2xl mr-5" onDragStart={(event) => onDragStart(event, 'output')} draggable>
-        Output Node
+        Output Block
       </div>
         </div>
 
