@@ -20,9 +20,10 @@ export default memo(({ data }: NodeProps<TurboNodeData>) => {
   
   return (
     <>
-      <div className="cloud gradient" onClick={() => setIsOpen((v) => !v)}>
+      <div className="cloud gradient">
         <div >
-          <FiCloud />
+          <button onClick={() => setIsOpen((v) => !v)}><FiCloud /></button>
+          
           
         </div>
       </div>

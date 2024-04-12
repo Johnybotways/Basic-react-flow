@@ -1,5 +1,5 @@
 
-const Sidebar = ({onAddNode}) => {
+const Sidebar = () => {
 
     const onDragStart = (event, nodeType) => {
         event.dataTransfer.setData('application/reactflow', nodeType);
@@ -11,13 +11,13 @@ const Sidebar = ({onAddNode}) => {
         <>
         <div className="sidebar">
             {/* <div className="button p-2 font-mono font-semibold text-gray-900 shadow-2xl mr-5" onClick={onAddNode}>Add Node</div> */}
-            <div className="button p-2 font-mono font-semibold text-gray-900 shadow-2xl mr-5" onDragStart={(event) => onDragStart(event, 'input')} draggable>
+            <div className="button p-2 font-mono font-semibold text-white shadow-2xl mr-5" onDragStart={(event) => onDragStart(event, 'input')} draggable>
         Chain Block
       </div>
-      <div className="button p-2 font-mono font-semibold text-gray-900 shadow-2xl mr-5" onDragStart={(event) => onDragStart(event, 'default')} draggable>
+      <div className="button p-2 font-mono font-semibold text-white shadow-2xl mr-5" onDragStart={(event) => onDragStart(event, 'default')} draggable>
         Condition Block
       </div>
-      <div className="button p-2 font-mono font-semibold text-gray-900 shadow-2xl mr-5" onDragStart={(event) => onDragStart(event, 'output')} draggable>
+      <div className="button p-2 font-mono font-semibold text-white shadow-2xl mr-5" onDragStart={(event) => onDragStart(event, 'output')} draggable>
         Output Block
       </div>
         </div>

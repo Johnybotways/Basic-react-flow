@@ -7,7 +7,7 @@ function App() {
   return (
     <>
     <div className="container">
-      {/* <Sidebar onAddNode={onAddNode}></Sidebar> */}
+      
       <Flow /></div>
     
       
