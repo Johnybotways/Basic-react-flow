@@ -1,4 +1,4 @@
-import { memo, ReactNode, useState } from 'react';
+import { memo, ReactNode, useState, useEffect } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { FiCloud } from 'react-icons/fi';
 
@@ -10,18 +10,19 @@ export type TurboNodeData = {
 
 export default memo(({ data }: NodeProps<TurboNodeData>) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleClick = () => {
-    setIsOpen(!isOpen);
-    console.log(`isopen: ${isOpen}`)
-  };
-
+  useEffect(()=> {console.log(`isopen: ${isOpen}`)}, [isOpen])
+  // const handleClick = () => {
+  //   console.log("clicked")
+  //   setIsOpen(prevState => !prevState);
+    
+  // };
+  
   
   return (
     <>
-      <div className="cloud gradient">
+      <div className="cloud gradient" onClick={() => setIsOpen((v) => !v)}>
         <div >
-          <button onClick={handleClick}><FiCloud /></button>
+          <FiCloud />
           
         </div>
       </div>
