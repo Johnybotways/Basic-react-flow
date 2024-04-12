@@ -13,6 +13,9 @@ import CustomEdge from "./CustomEdge";
 import TurboNode, { TurboNodeData } from "./TurboNode";
 import Icon from "./FunctionIcon";
 import { useCallback, useState } from "react";
+import { GiBreakingChain } from "react-icons/gi";
+
+
 import Sidebar from "./Sidebar";
 
 const initialEdges: Edge[] = [];
@@ -69,7 +72,7 @@ const Flow = () => {
         id: getId(),
         type,
         position,
-        data: { title: `Node ${id}`, icon: <Icon /> },
+        data: { title: `Node ${id}`, icon: <GiBreakingChain /> },
       };
 
       setNodes((nds) => nds.concat(newNode));

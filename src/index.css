@@ -171,6 +171,9 @@
   .react-flow__attribution a {
     color: #95679e;
   }
+  .react-flow__node-turbo.selected .wrapper.gradient.expanded input{
+background-color: #302f2f;
+  }
   /*
   
   
