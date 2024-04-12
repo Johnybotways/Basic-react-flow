@@ -1,0 +1,33 @@
+body{
+  background-color: rgb(49, 49, 49)
+}
+.sidebar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 200px;
+  background-color: rgb(20, 20, 20);
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container{
+  display: flex;
+  height: 100vh;
+}
+
+.flow{
+  margin-left: 250px;
+  margin-top: 10px;
+}
+.button{
+  margin-top: 60px;
+  margin-left: 20px;
+  font-size: larger;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: aliceblue;
+}
+
+
