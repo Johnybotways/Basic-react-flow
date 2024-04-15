@@ -13,9 +13,9 @@ import TurboNode from "./TurboNode";
 import { useCallback, useState } from "react";
 import { useNodeContext } from "./Nodeprovider";
 import { GiBreakingChain } from "react-icons/gi";
-
-
+import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "./Sidebar";
+import { addNodeData, deleteNodeData, updateNodes } from "../store/flowSlice/flowSlice";
 
 const initialEdges: Edge[] = [];
 
@@ -36,9 +36,10 @@ const defaultEdgeOptions = {
 };
 
 const Flow = () => {
-  
+  const dispatch = useDispatch();
+  const nodes = useSelector((state) => state.flow.nodes);
   // const [nodes, setNodes] = useNodesState(initialNodes);
-  const { nodes, setNodes, updateNodeData } = useNodeContext();
+  // const { nodes, setNodes, updateNodeData } = useNodeContext();
 
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -83,16 +84,24 @@ const Flow = () => {
         id: getId(),
         type,
         position,
-        data: { title: `Node ${id}`, icon: <GiBreakingChain />},
+        data: { title: `Node ${id}` , icon : <GiBreakingChain/>},
       };
 
-      setNodes((nds) => nds.concat(newNode));
+      // setNodes((nds) => nds.concat(newNode));
+      dispatch(addNodeData(newNode));
     },
-    [reactFlowInstance]
+    [reactFlowInstance, id, dispatch]
   );
+  // const onNodesChange = useCallback(
+  //   (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+  //   [nodes]
+  // );
   const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    [nodes]
+    (changes) => {
+      const updatedNodes = applyNodeChanges(changes, nodes);
+      dispatch(updateNodes(updatedNodes))
+    },
+    [dispatch, nodes]
   );
 
   const onConnect = useCallback(
@@ -104,10 +113,15 @@ const Flow = () => {
   );
   // const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), []);
 
- 
+  const handleDeleteNode = useCallback(
+    (nodeId) => {
+      dispatch(deleteNodeData(nodeId))
+    }, [dispatch]
+  )
 
   return (
     <div className="container">
+      <Sidebar ></Sidebar>
       <div className="flow" style={{ height: "600px", width: "1100px" }}>
         <ReactFlowProvider>
         {/* <div className="reactflow-wrapper" ref={reactFlowWrapper}> */}
@@ -157,7 +171,7 @@ const Flow = () => {
         {/* <ReactFlowProvider/> */}
         </ReactFlowProvider>
       </div>
-      <Sidebar ></Sidebar>
+      
     </div>
   );
 };

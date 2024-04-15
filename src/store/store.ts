@@ -1,7 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
-
+import flowReducer from './flowSlice/flowSlice'
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    flow : flowReducer,
+
+  },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -2,20 +2,23 @@ import { memo, ReactNode, useState } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { FiCloud } from 'react-icons/fi';
 import { useNodeContext } from './Nodeprovider';
+import { useDispatch, useSelector } from "react-redux";
+import { updateNodeData } from "../store/flowSlice/flowSlice";
 export type TurboNodeData = {
   title: string;
-  icon?: ReactNode;
+  icon : ReactNode,
   subline?: string;
   chainname?:string;
 };
 
 export default memo(({ data, id }: NodeProps<TurboNodeData>) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { updateNodeData } = useNodeContext();
+  // const { updateNodeData } = useNodeContext();
+  const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     const newValue = e.target.value;
-    updateNodeData(id, {...data, chainname:newValue})
+    dispatch(updateNodeData({nodeId: id, newData: {...data, chainname:newValue}}))
   }
 
   return (
