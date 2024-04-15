@@ -1,7 +1,6 @@
 import { memo, ReactNode, useContext, useState } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { FiCloud } from 'react-icons/fi';
-import { useChainName } from './chainName';
 import { useNodeContext } from './Nodeprovider';
 export type TurboNodeData = {
   title: string;
@@ -13,8 +12,8 @@ export type TurboNodeData = {
 export default memo(({ data, id }: NodeProps<TurboNodeData>) => {
   const [isOpen, setIsOpen] = useState(false);
   const { updateNodeData } = useNodeContext();
-  const {getChainNameById, setChainNameById} = useChainName();
-  const [inputValue, setInputValue] = useState(getChainNameById(id));
+  // const {getChainNameById, setChainNameById} = useChainName();
+  // const [inputValue, setInputValue] = useState(getChainNameById(id));
   // const [inputValue, setInputValue] = useState('');
   // useEffect(()=> {console.log(`isopen: ${isOpen}`)}, [isOpen])
   // const handleClick = () => {
