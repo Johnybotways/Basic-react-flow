@@ -1,4 +1,4 @@
-import { EdgeProps, getBezierPath } from 'reactflow';
+import { EdgeProps, getBezierPath , EdgeLabelRenderer} from 'reactflow';
 
 export default function CustomEdge({
   id,
@@ -14,7 +14,7 @@ export default function CustomEdge({
   const xEqual = sourceX === targetX;
   const yEqual = sourceY === targetY;
 
-  const [edgePath] = getBezierPath({
+  const [edgePath, labelX, labelY] = getBezierPath({
     // we need this little hack in order to display the gradient for a straight line
     sourceX: xEqual ? sourceX + 0.0001 : sourceX,
     sourceY: yEqual ? sourceY + 0.0001 : sourceY,
@@ -22,6 +22,7 @@ export default function CustomEdge({
     targetX,
     targetY,
     targetPosition,
+    data,
   });
 
   return (
@@ -33,6 +34,22 @@ export default function CustomEdge({
         d={edgePath}
         markerEnd={markerEnd}
       />
+      <EdgeLabelRenderer>
+        <div
+          style={{
+            position: 'absolute',
+            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+            background: '#ffcc00',
+            padding: 10,
+            borderRadius: 5,
+            fontSize: 12,
+            fontWeight: 700,
+          }}
+          className="nodrag nopan"
+        >
+          {data.label}
+        </div>
+      </EdgeLabelRenderer>
     </>
   );
 }

@@ -2,25 +2,28 @@ import ReactFlow, {
   Controls,
   addEdge,
   useEdgesState,
+  Connection,
+  updateEdge,
   applyNodeChanges,
   ReactFlowProvider,
   Edge,
+  applyEdgeChanges,
   
 } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomEdge from "./CustomEdge";
+import LabelEdge from "./LabelEgde";
 import TurboNode from "./TurboNode";
 import { useCallback, useState } from "react";
-import { useNodeContext } from "./Nodeprovider";
 import { GiBreakingChain } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "./Sidebar";
-import { addNodeData, deleteNodeData, updateNodes } from "../store/flowSlice/flowSlice";
-
-const initialEdges: Edge[] = [];
+import { addNodeData, deleteNodeData, updateNodes, updateEdges } from "../store/flowSlice/flowSlice";
+import { useRef } from "react";
+// const initialEdges: Edge[] = [];
 
 const edgeTypes = {
-  turbo: CustomEdge,
+  turbo: LabelEdge,
 };
 
 let id = 0;
@@ -36,24 +39,12 @@ const defaultEdgeOptions = {
 };
 
 const Flow = () => {
+  const edgeUpdateSuccessful = useRef(true);
+
   const dispatch = useDispatch();
   const nodes = useSelector((state) => state.flow.nodes);
-  // const [nodes, setNodes] = useNodesState(initialNodes);
-  // const { nodes, setNodes, updateNodeData } = useNodeContext();
-
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-  // const updateNodeData = (nodeId, newData) =>{
-  //   setNodes((prevNodes) => {
-  //     const updatedNodes = prevNodes.map((node) => {
-  //       if (node.id === nodeId){
-  //         return {...node, data: newData};
-  //       }
-  //       return node;
-  //     });
-  //     return updatedNodes;
-  //   })
-  // }
+  const edges = useSelector((state) => state.flow.edges);
+  // const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
 
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
@@ -97,27 +88,86 @@ const Flow = () => {
   //   [nodes]
   // );
   const onNodesChange = useCallback(
-    (changes) => {
+    (changes : any) => {
       const updatedNodes = applyNodeChanges(changes, nodes);
-      dispatch(updateNodes(updatedNodes))
+      dispatch(updateNodes(updatedNodes));
     },
     [dispatch, nodes]
   );
 
+  // const onConnect = useCallback(
+  //   (connection) => {
+  //     const edge = { ...connection, type: "turbo" };
+  //     setEdges((eds) => addEdge(edge, eds));
+  //   },
+  //   [setEdges]
+  // );
   const onConnect = useCallback(
-    (connection) => {
-      const edge = { ...connection, type: "turbo" };
-      setEdges((eds) => addEdge(edge, eds));
+    (connection : any) => {
+      console.log(connection)
+
+        dispatch(
+          updateEdges(
+            addEdge(
+              {
+                ...connection,
+                data: {
+                  label: "True",
+                }
+              },
+              edges
+            )
+          )
+        );
+      },
+    [edges]
+  );
+
+  const onEdgesChange = useCallback(
+    (changes : any) => {
+      const updatedEdge = applyEdgeChanges(changes, edges);
+      dispatch(updateEdges(updatedEdge));
+    }, [dispatch, edges]
+  );
+  const onEdgeUpdateStart = useCallback(() => {
+    edgeUpdateSuccessful.current = false;
+  }, []);
+
+  const onEdgeUpdate = useCallback(
+    (oldEdge: Edge, newConnection: Connection) => {
+edgeUpdateSuccessful.current = true;
+      dispatch(updateEdges(updateEdge(oldEdge, newConnection, edges)));
     },
-    [setEdges]
+    [edges]
   );
   // const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), []);
-
+  const onEdgeUpdateEnd = useCallback(
+    (_: any, edge: Edge) => {
+      if (!edgeUpdateSuccessful.current) {
+dispatch(updateEdges([...edges.filter((e: Edge) => e.id !== edge.id)]));
+      }
+      edgeUpdateSuccessful.current = true;
+    },
+    [edges]
+  );
   const handleDeleteNode = useCallback(
     (nodeId) => {
       dispatch(deleteNodeData(nodeId))
     }, [dispatch]
   )
+//   const onEdgeUpdateStart = useCallback(() => {
+//     edgeUpdateSuccessful.current = false;
+//   }, []);
+
+//   const onEdgeUpdateEnd = useCallback(
+//     (_: any, edge: Edge) => {
+//       if (!edgeUpdateSuccessful.current) {
+// dispatch(updateEdges([...edges.filter((e: Edge) => e.id !== edge.id)]));
+//       }
+//       edgeUpdateSuccessful.current = true;
+//     },
+//     [dispatch, edges]
+//   );
 
   return (
     <div className="container">
@@ -138,6 +188,9 @@ const Flow = () => {
           onDragOver={onDragOver}
           fitView
           defaultEdgeOptions={defaultEdgeOptions}
+          onEdgeUpdateStart={onEdgeUpdateStart}
+          onEdgeUpdateEnd={onEdgeUpdateEnd}
+          onEdgeUpdate={onEdgeUpdate}
         >
           <Controls />
           <svg>

@@ -1,8 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { Edge, Node } from "reactflow";
 
-const initialState = {
+interface FlowState {
+  nodes: Node[];
+  edges: Edge[];
+}
+
+const initialState : FlowState= {
     nodes : [],
+    edges : [],
 }
 
 export const flowSlice = createSlice({
@@ -27,12 +33,16 @@ export const flowSlice = createSlice({
         updateNodes: (state, action) => {
             const updatedNodes = action.payload;
             state.nodes = updatedNodes;
-        }
+        },
+        updateEdges : (state, action) => {
+            const updatedEdges = action.payload;
+            state.edges = updatedEdges;
+          },
     },
     
 });
 
 
-export const {addNodeData, updateNodeData, deleteNodeData, updateNodes} = flowSlice.actions;
+export const {addNodeData, updateNodeData, deleteNodeData, updateNodes, updateEdges} = flowSlice.actions;
 
 export default flowSlice.reducer;
