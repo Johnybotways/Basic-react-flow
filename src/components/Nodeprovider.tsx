@@ -1,7 +1,4 @@
 import { createContext, useContext, useState } from "react";
-
-
-
 const NodeContext = createContext();
 
 export const useNodeContext = () => {
