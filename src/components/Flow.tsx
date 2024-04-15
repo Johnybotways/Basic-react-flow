@@ -4,14 +4,12 @@ import ReactFlow, {
   useEdgesState,
   applyNodeChanges,
   ReactFlowProvider,
-  Node,
   Edge,
-  useNodesState,
+  
 } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomEdge from "./CustomEdge";
-import TurboNode, { TurboNodeData } from "./TurboNode";
-import Icon from "./FunctionIcon";
+import TurboNode from "./TurboNode";
 import { useCallback, useState } from "react";
 import { useNodeContext } from "./Nodeprovider";
 import { GiBreakingChain } from "react-icons/gi";
@@ -24,12 +22,10 @@ const initialEdges: Edge[] = [];
 const edgeTypes = {
   turbo: CustomEdge,
 };
-// const edgeTypes = {
-//   turbo: CustomEdge,
-// };
+
 let id = 0;
 const getId = () => `dndnode_${id++}`;
-// const initialNodes: Node<TurboNodeData>[] = [];
+
 const nodeTypes = {
   turbo: TurboNode,
 };
