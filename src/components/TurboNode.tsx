@@ -1,15 +1,18 @@
-import { memo, ReactNode, useState } from 'react';
+import { memo, ReactNode, useContext, useState } from 'react';
 import { Handle, NodeProps, Position } from 'reactflow';
 import { FiCloud } from 'react-icons/fi';
 import { useChainName } from './chainName';
+import { useNodeContext } from './Nodeprovider';
 export type TurboNodeData = {
   title: string;
   icon?: ReactNode;
   subline?: string;
+  chainname?:string;
 };
 
 export default memo(({ data, id }: NodeProps<TurboNodeData>) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { updateNodeData } = useNodeContext();
   const {getChainNameById, setChainNameById} = useChainName();
   const [inputValue, setInputValue] = useState(getChainNameById(id));
   // const [inputValue, setInputValue] = useState('');
@@ -20,13 +23,15 @@ export default memo(({ data, id }: NodeProps<TurboNodeData>) => {
     
   // };
 
+  
+
   const handleInputChange = (e) => {
     const newValue = e.target.value;
-    setInputValue(newValue);
-    setChainNameById(id, newValue);
-    // updateNodeData(id, {...data, chainname:newValue})
+    // setInputValue(newValue);
+    // setChainNameById(id, newValue);
+    updateNodeData(id, {...data, chainname:newValue})
   }
-  const updatedData = {...data, chainname : inputValue}
+  // const updatedData = {...data, chainname : inputValue}
   // console.log(updatedData)
 
   return (
@@ -45,10 +50,10 @@ export default memo(({ data, id }: NodeProps<TurboNodeData>) => {
               {isOpen && (
             <div>
               
-              <input type="text" value={updatedData.chainname} onChange={handleInputChange} placeholder='chain name'/>
+              <input type="text" value={data.chainname} onChange={handleInputChange} placeholder='chain name'/>
             </div>
           )}
-              {!isOpen && <div className="title">{updatedData.chainname}</div>}
+              {!isOpen && <div className="title">{data.chainname}</div>}
               {!isOpen && data.subline &&  <div className="subline">{data.subline}</div>}
             </div>
           </div>

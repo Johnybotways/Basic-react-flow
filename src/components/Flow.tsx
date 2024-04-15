@@ -13,6 +13,7 @@ import CustomEdge from "./CustomEdge";
 import TurboNode, { TurboNodeData } from "./TurboNode";
 import Icon from "./FunctionIcon";
 import { useCallback, useState } from "react";
+import { useNodeContext } from "./Nodeprovider";
 import { GiBreakingChain } from "react-icons/gi";
 
 
@@ -28,7 +29,7 @@ const edgeTypes = {
 // };
 let id = 0;
 const getId = () => `dndnode_${id++}`;
-const initialNodes: Node<TurboNodeData>[] = [];
+// const initialNodes: Node<TurboNodeData>[] = [];
 const nodeTypes = {
   turbo: TurboNode,
 };
@@ -40,20 +41,22 @@ const defaultEdgeOptions = {
 
 const Flow = () => {
   
-  const [nodes, setNodes] = useNodesState(initialNodes);
+  // const [nodes, setNodes] = useNodesState(initialNodes);
+  const { nodes, setNodes, updateNodeData } = useNodeContext();
+
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const updateNodeData = (nodeId, newData) =>{
-    setNodes((prevNodes) => {
-      const updatedNodes = prevNodes.map((node) => {
-        if (node.id === nodeId){
-          return {...node, data: newData};
-        }
-        return node;
-      });
-      return updatedNodes;
-    })
-  }
+  // const updateNodeData = (nodeId, newData) =>{
+  //   setNodes((prevNodes) => {
+  //     const updatedNodes = prevNodes.map((node) => {
+  //       if (node.id === nodeId){
+  //         return {...node, data: newData};
+  //       }
+  //       return node;
+  //     });
+  //     return updatedNodes;
+  //   })
+  // }
 
 
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
@@ -65,7 +68,6 @@ const Flow = () => {
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
-      const chainname = '';
 
       const type = "turbo";
 
@@ -85,7 +87,7 @@ const Flow = () => {
         id: getId(),
         type,
         position,
-        data: { title: `Node ${id}`, icon: <GiBreakingChain /> , chainname},
+        data: { title: `Node ${id}`, icon: <GiBreakingChain />},
       };
 
       setNodes((nds) => nds.concat(newNode));
