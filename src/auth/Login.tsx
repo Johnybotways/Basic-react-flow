@@ -1,15 +1,32 @@
 import React, { useState }  from 'react'
 import { useNavigate } from 'react-router-dom';
 import '@mantine/core/styles.css';
-import { Alert } from '@mantine/core';
+import { Alert, Input, Button, Modal } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+const onAlert = () => {
+
+    // console.log(<Alert/>)
+            
+    return <>
+            <Alert variant="light" color="red" withCloseButton={false} title="Login Failed" >
+        Failed to Login, please check your Username and password.
+</Alert>
+
+    </>
+
+
+}
 
 const Login : React.FC = () => {
 
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [alert, setAlert] = useState<boolean>(false);
+    const [opened, { open, close }] = useDisclosure(false);
     const navigate = useNavigate();
-
+    console.log(opened)
+    console.log(open)
+    console.log(close)
     const handleSubmit = async (e : React.FormEvent) => {
         e.preventDefault();
         try {
@@ -24,7 +41,7 @@ const Login : React.FC = () => {
             // console.log("Fetch ends")
             
             const data = await response.json();
-            console.log(response)
+            // console.log(response)
             if (data.error) {
                setAlert(true);
             } else if (response.status === 405) {
@@ -36,20 +53,8 @@ const Login : React.FC = () => {
         }catch (error : any){
             setAlert(true);
         }
-
-        const onAlert = () => {
-            
-            return <>
-                    <Alert variant="light" color="red" withCloseButton title="Login Failed">
-                Failed to Login, please check your Username and password.
-        </Alert>
-            </>
-        }
-
-        setAlert(false);
-
+    }
         
-    };
 
   return (
     <div>
@@ -58,16 +63,45 @@ const Login : React.FC = () => {
         </h2>
         <form onSubmit={handleSubmit}>
             <div>
-                <label>Username: </label>
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <label>Email: </label>
+                <Input
+            type="email"
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your email"
+            className="mt-3"
+            style={{"margin-top" : "5px"}}
+          />
+                {/* <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} /> */}
             </div>
-            <div>
-                <label htmlFor="">Password: </label>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <div style={{"margin-top" : "15px"}}>
+                <label htmlFor="" >Password: </label>
+                <Input style={{"margin-top" : "5px"}} type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password"
+            className="mt-3"/>
             </div>
-            <button type='submit'>Login</button>
+            
+            <Button  type='submit' style={{"margin-top" : "10px"}}>Login</Button ><span>  </span>
+            <Button style={{"margin-top" : "10px"}} onClick={open}>Forget Password</Button >
         </form>
-        {alert && }
+        
+        <Modal opened={opened} onClose={close} title="Forget Password">
+            <form>
+        <Input
+            type="email"
+            required
+            placeholder="Enter your email"
+            className="mt-3"
+            style={{"margin-top" : "5px"}}
+          />
+          <br />
+          <br />
+          <h3>We will send you a password reset link</h3>
+          <br />
+        <Button type='submit' style={{"margin-top" : "10px"}} onClick={close}>Get Link</Button >
+        </form>
+      </Modal>
+        {alert && onAlert()}
     </div>
   )
 }
