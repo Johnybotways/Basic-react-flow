@@ -54,7 +54,8 @@ const Flow = () => {
   }, []);
 
   const onDrop = useCallback(
-    (event) => {
+    (event : any) => {
+      console.log(event)
       event.preventDefault();
 
       const type = "turbo";
@@ -191,6 +192,7 @@ dispatch(updateEdges([...edges.filter((e: Edge) => e.id !== edge.id)]));
           onEdgeUpdateStart={onEdgeUpdateStart}
           onEdgeUpdateEnd={onEdgeUpdateEnd}
           onEdgeUpdate={onEdgeUpdate}
+          
         >
           <Controls />
           <svg>

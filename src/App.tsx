@@ -1,20 +1,20 @@
 import './App.css'
 import './index.css';
-import  Flow  from './components/Flow'
-import { NodeProvider } from './components/Nodeprovider';
+import { RouterProvider,createBrowserRouter } from "react-router-dom";
+import DashBoard from './components/DashBoard';
+import Login from './auth/Login';
 function App() {
-  
+  const router = createBrowserRouter([
+    {path : "/",
+      element : <Login/>
+    },
+    {path : "/dashboard",
+      element : <DashBoard/>
+    },
+  ])
 
   return (
-    <>
-    <div className="container">
-      <NodeProvider>
-      <Flow />
-      </NodeProvider>
-      </div>
-    
-      
-    </>
+    <RouterProvider router={router}></RouterProvider>
   )
 }
 
